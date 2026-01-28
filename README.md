@@ -1,73 +1,75 @@
-# JSONPlaceholder User Fetcher
+# User Data Fetcher & CSV Exporter
 
-A production-ready, clean-architecture Node.js (TypeScript) service to fetch user information from the JSONPlaceholder API.
+This Node.js application fetches user data from the JSONPlaceholder API and exports all user fields (including nested objects) to a properly formatted CSV file.
 
 ## Features
 
-- Clean, layered architecture (controller → service → repository → domain)
-- Environment-based configuration via `.env`
-- Centralized logging and error handling
-- Fetches all user records from JSONPlaceholder `/users` endpoint
-- Modular, testable, and well-documented code
+- Fetches all user fields from the JSONPlaceholder `/users` endpoint
+- Stores all fields, including nested objects, in a CSV file
+- Clean, modular, and production-ready codebase
+- Environment-based configuration
+- Logging and error handling
 
 ## Folder Structure
 
 ```
 src/
-  config/         # Configuration loader
-  controllers/    # Controller/entrypoint
-  services/       # Business logic
-  repositories/   # API communication
+  config/         # Configuration and environment management
+  controllers/    # Application controllers
   domain/         # Domain models
-  utils/          # Logger, helpers
-.env
-.env.example
-.gitignore
-README.md
-package.json
-tsconfig.json
+  repositories/   # Data access layer
+  services/       # Business logic
+  utils/          # Utilities (CSV writer, logger, etc.)
 ```
+
+## Prerequisites
+
+- Node.js (v16+ recommended)
+- npm
 
 ## Setup
 
-1. **Install dependencies:**
+1. **Clone the repository**
+
+2. **Install dependencies**
    ```bash
    npm install
    ```
 
-2. **Configure environment:**
-   - Copy `.env.example` to `.env` and adjust values as needed.
+3. **Configure environment variables**
 
-3. **Build and run:**
+   - Copy `.env.example` to `.env` and adjust values if needed:
+     ```bash
+     cp .env.example .env
+     ```
+
+   - By default, the following variables are required:
+     - `API_URL` - Base URL for the JSONPlaceholder API (default: `https://jsonplaceholder.typicode.com`)
+     - `CSV_OUTPUT_PATH` - Output path for the generated CSV file (default: `output/users.csv`)
+
+4. **Run the application**
    ```bash
-   npx tsc
-   node dist/index.js
-   ```
-   Or, for development:
-   ```bash
-   npx ts-node src/index.ts
+   npm start
    ```
 
-## Configuration
+   The CSV file will be generated at the path specified in your `.env` file.
 
-All environment variables are managed in `.env`:
+## Output
 
-- `JSONPLACEHOLDER_API_BASE_URL` (default: `https://jsonplaceholder.typicode.com`)
-- `LOG_LEVEL` (default: `info`)
+- The CSV file will contain all user fields as returned by the API, including nested objects (address, company) as JSON strings.
+- The file can be opened in any standard spreadsheet application.
 
-## Usage
+## Logging
 
-The entrypoint (`src/index.ts`) fetches and prints all users to the console.
+- Logs are printed to the console.
+- Log level can be set via the `LOG_LEVEL` environment variable (default: `info`).
 
-## Error Handling
+## Project Standards
 
-- Network/API errors are logged and reported without crashing the system.
-- All configuration is validated at startup.
-
-## Extending
-
-- Add new services, repositories, or controllers as needed.
-- Integrate with a web framework (e.g., Express) for HTTP endpoints.
+- Follows clean architecture and industry-standard folder structure
+- All configuration is managed via `.env` files
+- No hardcoded values
+- Fully documented, modular, and testable code
 
 ## License
 

@@ -5,6 +5,7 @@ dotenv.config();
 interface Config {
   jsonPlaceholderApiBaseUrl: string;
   logLevel: string;
+  csvOutputPath: string;
 }
 
 function getEnvVar(key: string, defaultValue?: string): string {
@@ -17,8 +18,9 @@ function getEnvVar(key: string, defaultValue?: string): string {
 }
 
 const config: Config = {
-  jsonPlaceholderApiBaseUrl: getEnvVar('JSONPLACEHOLDER_API_BASE_URL'),
+  jsonPlaceholderApiBaseUrl: getEnvVar('API_URL'),
   logLevel: getEnvVar('LOG_LEVEL', 'info'),
+  csvOutputPath: getEnvVar('CSV_OUTPUT_PATH'),
 };
 
 export default config;
