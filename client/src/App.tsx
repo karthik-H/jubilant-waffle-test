@@ -14,7 +14,8 @@ function App() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch('/api/users');
+      const apiUrl = process.env.REACT_APP_API_URL || '';
+      const res = await fetch(`${apiUrl}/api/users`);
       if (!res.ok) {
         throw new Error('Failed to fetch user data');
       }
@@ -36,8 +37,24 @@ function App() {
 
   useEffect(() => {
     fetchUsers();
-    const interval = setInterval(fetchUsers, 5000); // Poll every 5 seconds
-    return () => clearInterval(interval);
+    // WebSocket for real-time updates
+    let socket: any;
+    import('./utils/socket').then(({ getSocket }) => {
+      try {
+        socket = getSocket();
+        socket.on('userDataUpdated', () => {
+          fetchUsers();
+        });
+      } catch (err) {
+        // Ignore socket errors for now
+      }
+    });
+    return () => {
+      if (socket) {
+        socket.off('userDataUpdated');
+        socket.disconnect();
+      }
+    };
   }, []);
 
   return (
