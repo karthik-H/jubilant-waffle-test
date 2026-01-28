@@ -32,3 +32,6 @@ coverage/
 # Do NOT ignore .env files (per requirements)
 !.env
 !.env.example
+
+# Ignore output CSVs if present
+output/

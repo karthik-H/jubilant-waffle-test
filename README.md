@@ -68,6 +68,7 @@ npm install
 
 - Copy `.env.example` to `.env` and adjust as needed.
 - Ensure `USER_CSV_PATH=./data/users.csv` is set.
+- Optionally set `PORT` and `LOG_LEVEL` as needed.
 
 ### 4. Prepare the CSV file
 
@@ -83,6 +84,7 @@ npm start
 ```
 
 - The backend will run on [http://localhost:3001](http://localhost:3001) by default.
+- The API endpoint for user data is: `GET /api/users`
 
 ### 6. Start the frontend (React app)
 
@@ -94,8 +96,10 @@ npm start
 
 - The frontend will run on [http://localhost:3000](http://localhost:3000) by default.
 - It will proxy API requests to the backend.
+- The UI will auto-refresh every 5 seconds to reflect CSV changes.
 
 ---
+
 
 ## Usage
 
