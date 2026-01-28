@@ -7,6 +7,7 @@ interface Config {
   logLevel: string;
   csvOutputPath: string;
   userCsvPath: string;
+  usersStoragePath: string;
 }
 
 function getEnvVar(key: string, defaultValue?: string): string {
@@ -23,6 +24,7 @@ const config: Config = {
   logLevel: getEnvVar('LOG_LEVEL', 'info'),
   csvOutputPath: getEnvVar('CSV_OUTPUT_PATH'),
   userCsvPath: getEnvVar('USER_CSV_PATH'),
+  usersStoragePath: getEnvVar('USERS_STORAGE_PATH'),
 };
 
 export default config;
