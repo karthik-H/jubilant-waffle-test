@@ -59,16 +59,20 @@ npm install
 
 ### 4. Run the Application
 
-#### Start Backend
+#### Start Backend (in project root)
 
 ```bash
+# For development (with hot reload)
+npm run dev
+
+# For production
+npm run build
 npm start
 ```
 
-#### Start Frontend
+#### Start Frontend (in client/)
 
 ```bash
-cd client
 npm start
 ```
 
@@ -85,6 +89,8 @@ npm start
 
 - All environment variables are managed via `.env` and `.env.example` files in both root and `client/`.
 - **Do not** add `.env` to `.gitignore` (per requirements).
+- Backend CORS origins can be set via `CORS_ORIGIN` in `.env`.
+- The CSV file path is set via `USER_CSV_PATH` in `.env`.
 
 ## Logging & Error Handling
 
@@ -97,6 +103,13 @@ npm start
 - Clean, modular, and testable code.
 - All configuration is environment-based.
 - No direct access or modification of the CSV file from the UI.
+- CORS is production-ready and configurable.
+- WebSocket and REST API are secured to only serve data, not allow modification.
+
+## Architecture
+
+- **Backend:** Layered (controller → service → repository), config via `.env`, error handling, logging, CORS, WebSocket for real-time updates.
+- **Frontend:** React, environment-based config, modular, connects to backend API and WebSocket, auto-refreshes table on CSV changes.
 
 ## License
 
