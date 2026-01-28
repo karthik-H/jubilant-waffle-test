@@ -1,43 +1,43 @@
-import axios, { AxiosInstance } from 'axios';
+import fs from 'fs';
+import path from 'path';
+import { parse } from 'csv-parse/sync';
 import config from '../config/config';
 import { User } from '../domain/User';
+import { logger } from '../utils/logger';
 
 /**
- * Repository for fetching user data from JSONPlaceholder API.
+ * Repository for fetching user data from a CSV file.
  */
 export class UserRepository {
-  private client: AxiosInstance;
-
-  constructor() {
-    this.client = axios.create({
-      baseURL: config.jsonPlaceholderApiBaseUrl,
-      timeout: 5000,
-    });
-  }
-
   /**
-   * Fetch all users from the API.
+   * Fetch all users from the CSV file.
    * @returns Promise<User[]>
-   * @throws Error if network/API error occurs
+   * @throws Error if file or parsing error occurs
    */
   async fetchAllUsers(): Promise<User[]> {
+    const csvPath = path.resolve(config.userCsvPath);
     try {
-      const response = await this.client.get<User[]>('/users');
-      // Validate and return only the required fields
-      return response.data.map((user) => ({
-        id: user.id,
-        name: user.name,
-        username: user.username,
-        email: user.email,
-        phone: user.phone,
-        website: user.website,
-        address: user.address,
-        company: user.company,
-      }));
+      if (!fs.existsSync(csvPath)) {
+        logger.error(`[UserRepository] CSV file not found at path: ${csvPath}`);
+        throw new Error('User data file not found.');
+      }
+      const fileContent = fs.readFileSync(csvPath, 'utf-8');
+      let records: User[];
+      try {
+        records = parse(fileContent, {
+          columns: true,
+          skip_empty_lines: true,
+          trim: true,
+        });
+      } catch (parseError: any) {
+        logger.error(`[UserRepository] CSV parse error: ${parseError.message || parseError}`);
+        throw new Error('Failed to parse user data file.');
+      }
+      return records as User[];
     } catch (error: any) {
-      // Rethrow for service layer to handle/log
+      logger.error(`[UserRepository] Error reading users from CSV: ${error.message || error}`);
       throw new Error(
-        `Failed to fetch users from API: ${error.message || error.toString()}`
+        `Failed to fetch users from CSV: ${error.message || error.toString()}`
       );
     }
   }

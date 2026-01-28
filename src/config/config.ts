@@ -6,6 +6,7 @@ interface Config {
   jsonPlaceholderApiBaseUrl: string;
   logLevel: string;
   csvOutputPath: string;
+  userCsvPath: string;
 }
 
 function getEnvVar(key: string, defaultValue?: string): string {
@@ -21,6 +22,7 @@ const config: Config = {
   jsonPlaceholderApiBaseUrl: getEnvVar('API_URL'),
   logLevel: getEnvVar('LOG_LEVEL', 'info'),
   csvOutputPath: getEnvVar('CSV_OUTPUT_PATH'),
+  userCsvPath: getEnvVar('USER_CSV_PATH'),
 };
 
 export default config;

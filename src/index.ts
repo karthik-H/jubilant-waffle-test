@@ -1,25 +1,27 @@
+import express, { Request, Response } from 'express';
 import userController from './controllers/UserController';
-import config from './config/config';
-import { writeObjectsToCsv } from './utils/csvWriter';
 import { logger } from './utils/logger';
 
-/**
- * Entrypoint for the application.
- * Fetches all users from JSONPlaceholder and writes them to a CSV file.
- */
-async function main() {
+const app = express();
+const PORT = process.env.PORT || 3001;
+
+// Health check endpoint
+app.get('/api/health', (_req: Request, res: Response) => {
+  res.json({ status: 'ok' });
+});
+
+// Users API endpoint
+app.get('/api/users', async (_req: Request, res: Response) => {
   try {
     const users = await userController.getAllUsers();
-    logger.info(`Fetched ${users.length} users. Writing to CSV...`);
-    await writeObjectsToCsv(users, config.csvOutputPath);
-    logger.info(`User data successfully written to CSV at: ${config.csvOutputPath}`);
-    // Optionally, print a summary
-    console.log(`CSV file created at: ${config.csvOutputPath}`);
+    res.json(users);
   } catch (error: any) {
-    logger.error('Error fetching users or writing CSV: ' + (error.message || error));
-    console.error('Error fetching users or writing CSV:', error.message || error);
-    process.exit(1);
+    logger.error(`[API] Failed to fetch users: ${error.message || error}`);
+    res.status(500).json({ error: 'Failed to fetch users' });
   }
-}
+});
 
-main();
+// Start server
+app.listen(PORT, () => {
+  logger.info(`Server running on http://localhost:${PORT}`);
+});
