@@ -1,0 +1,33 @@
+{
+  "name": "jsonplaceholder-user-fetcher",
+  "version": "1.0.0",
+  "description": "Production-ready user fetcher from JSONPlaceholder API using clean architecture (Node.js + TypeScript)",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/main.js",
+    "dev": "ts-node src/main.ts",
+    "lint": "eslint . --ext .ts"
+  },
+  "keywords": [
+    "jsonplaceholder",
+    "user",
+    "clean-architecture",
+    "typescript",
+    "nodejs"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "dotenv": "^16.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.10",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "ts-node": "^10.0.0",
+    "typescript": "^5.0.4"
+  }
+}
