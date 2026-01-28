@@ -1,5 +1,6 @@
 # Node modules
 node_modules/
+client/node_modules/
 
 # Logs
 logs/
@@ -14,6 +15,7 @@ yarn-error.log*
 # TypeScript
 dist/
 build/
+client/build/
 
 # Editor directories and files
 .vscode/
@@ -35,3 +37,4 @@ coverage/
 
 # Ignore output CSVs if present
 output/
+client/coverage/

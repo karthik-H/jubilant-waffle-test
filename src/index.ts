@@ -4,8 +4,24 @@ import { logger } from './utils/logger';
 import http from 'http';
 import { initUserDataWebSocket, shutdownUserDataWebSocket } from './websocket/UserDataWebSocket';
 
+import cors from 'cors';
+
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+// CORS configuration (production-ready)
+const allowedOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(',')
+  : ['http://localhost:3000', 'http://localhost:3001'];
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
 
 // Health check endpoint
 app.get('/api/health', (_req: Request, res: Response) => {
